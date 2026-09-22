@@ -136,9 +136,10 @@ export function useData(
 
         // 3) Daily candles — per coin (cached per timeframe, 10 min TTL)
         const candleTtl = Math.min(priceTtl, 10 * 60 * 1000);
+        const timeframe = settings.timeframe || '1d';
         const candleResults = await Promise.allSettled(
           watchlist.map((c) =>
-            api.getOHLCV(binancePair(c.symbol), '1d', config.ohlcvLimit, settings.binanceBaseUrl, candleTtl)
+            api.getOHLCV(binancePair(c.symbol), timeframe, config.ohlcvLimit, settings.binanceBaseUrl, candleTtl)
           )
         );
 
@@ -181,7 +182,7 @@ export function useData(
         inFlight.current = false;
       }
     },
-    [watchlist, settings.refreshInterval, settings.binanceBaseUrl, settings.coingeckoBaseUrl]
+    [watchlist, settings.refreshInterval, settings.timeframe, settings.binanceBaseUrl, settings.coingeckoBaseUrl]
   );
 
   // Initial load + periodic refresh (configurable 1–60 min)

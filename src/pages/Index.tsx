@@ -298,16 +298,18 @@ const Index: React.FC = () => {
         {/* Main Content Area */}
         <section className="grid gap-6 lg:col-span-2 xl:col-span-3">
           {/* Candlestick Chart */}
-          <CandlestickChart
-            candles={selectedCoinOHLCV}
-            coinSymbol={selectedCoinInfo?.symbol || ''}
-            coinName={selectedCoinInfo?.name || ''}
-            settings={settings}
-            timeframe={settings.timeframe || config.chartTimeframes[0].value} // Default timeframe if not set
-            onTimeframeChange={handleTimeframeChange}
-            isLoadingCandles={isLoading && selectedCoinOHLCV.length === 0}
-            errorMessage={error}
-          />
+          <div className="h-[400px]">
+            <CandlestickChart
+              candles={selectedCoinOHLCV}
+              coinSymbol={selectedCoinInfo?.symbol || ''}
+              coinName={selectedCoinInfo?.name || ''}
+              settings={settings}
+              timeframe={settings.timeframe || config.chartTimeframes[0].value}
+              onTimeframeChange={handleTimeframeChange}
+              isLoadingCandles={isLoading && selectedCoinOHLCV.length === 0}
+              errorMessage={error}
+            />
+          </div>
 
           {/* Bottom Panels (Signal & Fundamentals) */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
