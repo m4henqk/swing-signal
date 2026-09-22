@@ -17,6 +17,7 @@ const INITIAL_SETTINGS: AppSettings = {
   threshold: config.thresholdOptions[0],
   refreshInterval: config.refreshIntervalOptions[0],
   theme: 'dark',
+  timeframe: config.chartTimeframes[0].value,
   binanceBaseUrl: config.binanceApiBaseUrl,
   coingeckoBaseUrl: config.coingeckoApiBaseUrl,
 };
@@ -123,10 +124,13 @@ const Index: React.FC = () => {
   const coinStatsMap = React.useMemo(() => {
     const map: Record<string, CoinStats> = {};
     watchlist.forEach((coin) => {
-      const ticker = tickerBySymbol[coin.symbol]; // symbol is uppercase in watchlist usually
+      // Binance returns keys like "BTCUSDT", but watchlist has "BTC"
+      const binanceSymbol = `${coin.symbol}USDT`;
+      const ticker = tickerBySymbol[binanceSymbol];
       const ohlcv = ohlcvById[coin.id] || [];
-      const price = ticker?.lastPrice ? parseFloat(ticker.lastPrice) : 0;
-      const change24h = ticker?.priceChangePercent ? parseFloat(ticker.priceChangePercent) : 0;
+      // API returns: price, changePct24h
+      const price = ticker?.price ? parseFloat(String(ticker.price)) : 0;
+      const change24h = ticker?.changePct24h ? parseFloat(String(ticker.changePct24h)) : 0;
 
       // Compute Z-score from OHLCV
       let zScore: number | null = null;

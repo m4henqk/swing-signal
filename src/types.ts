@@ -59,6 +59,7 @@ export interface AppSettings {
   threshold: number;
   refreshInterval: number;
   theme: 'dark' | 'light';
+  timeframe: string;
   binanceBaseUrl: string;
   coingeckoBaseUrl: string;
 }
