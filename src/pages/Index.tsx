@@ -268,6 +268,8 @@ const Index: React.FC = () => {
         onOpenSettings={() => setIsSettingsModalOpen(true)}
         theme={theme}
         onThemeChange={handleThemeChange}
+        settings={settings}
+        onSettingsChange={setSettings}
       />
 
       <main className="container grid flex-1 grid-cols-1 gap-6 py-6 lg:grid-cols-3 xl:grid-cols-4">
