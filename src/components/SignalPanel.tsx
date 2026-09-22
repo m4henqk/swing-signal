@@ -1,16 +1,20 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { getSignalLabel, getSignalColor, CoinStats } from '@/types';
+import { getSignalLabel, getSignalColor } from '@/stats';
+import { CoinStats } from '@/types';
 import { formatZScore } from '@/stats';
 
 interface SignalPanelProps {
   coinStats: CoinStats | null;
-  lookback: number;
-  threshold: number;
+  settings: {
+    lookback: number;
+    threshold: number;
+  };
 }
 
-export const SignalPanel: React.FC<SignalPanelProps> = ({ coinStats, lookback, threshold }) => {
+export const SignalPanel: React.FC<SignalPanelProps> = ({ coinStats, settings }) => {
+  const { lookback, threshold } = settings;
   if (!coinStats) {
     return (
       <Card className="w-full">

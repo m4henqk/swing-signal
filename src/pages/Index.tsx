@@ -124,24 +124,57 @@ const Index: React.FC = () => {
 
       // Compute Z-score from OHLCV
       let zScore: number | null = null;
+      let sma: number | null = null;
+      let stdDev: number | null = null;
+      let trendWarning = false;
+      let trendDistance = 0;
+
       if (ohlcv.length > 0) {
         const closes = ohlcv.map(c => c.close);
         const stats = rollingStats(closes, settings.lookback);
         const lastStat = stats[stats.length - 1];
-        if (lastStat && lastStat.stdDev > 0) {
-           zScore = (price - lastStat.sma) / lastStat.stdDev;
+        
+        if (lastStat) {
+          sma = lastStat.sma;
+          stdDev = lastStat.stdDev;
+          if (lastStat.stdDev > 0) {
+             zScore = (price - lastStat.sma) / lastStat.stdDev;
+          }
+        }
+
+        // Compute trend warning (price > 10% from 200-period SMA)
+        if (closes.length >= 200) {
+          const stats200 = rollingStats(closes, 200);
+          const sma200 = stats200[stats200.length - 1]?.sma;
+          if (sma200) {
+            trendDistance = ((price - sma200) / sma200) * 100;
+            if (Math.abs(trendDistance) > 10) {
+              trendWarning = true;
+            }
+          }
         }
       }
 
       map[coin.id] = {
+        id: coin.id,
+        symbol: coin.symbol,
+        name: coin.name,
         price,
-        change24h,
-        zScore,
+        price24hChange: change24h,
+        sma: sma ?? 0,
+        stdDev: stdDev ?? 0,
+        zScore: zScore ?? 0,
         signal: signalFor(zScore, settings.threshold),
+        threshold: settings.threshold,
+        trendWarning,
+        trendDistance,
+        ohlcv,
+        coinData: coinDataById[coin.id] || null,
+        cacheStatus: 'fresh', // Simplification: assume fresh or handle via status
       };
     });
     return map;
-  }, [watchlist, tickerBySymbol, ohlcvById, settings.lookback, settings.threshold]);
+  }, [watchlist, tickerBySymbol, ohlcvById, coinDataById, settings.lookback, settings.threshold]);
 
 
   const selectedCoinData = selectedCoinId ? coinDataById[selectedCoinId] : null;
