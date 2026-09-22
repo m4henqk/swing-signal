@@ -66,7 +66,7 @@ export const CandlestickChart: React.FC<CandlestickChartProps> = ({
   errorMessage,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 360 }); // Fixed height for chart area
+  const [dimensions, setDimensions] = useState({ width: 600, height: 360 }); // Default width
   const [visibleRange, setVisibleRange] = useState({ start: 0, end: 1 }); // 0-1 range for visible data
   const [hoverInfo, setHoverInfo] = useState<ChartHoverInfo | null>(null);
 
