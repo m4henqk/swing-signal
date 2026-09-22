@@ -373,6 +373,11 @@ export const CandlestickChart: React.FC<CandlestickChartProps> = ({
               );
             })}
 
+            {/* Debug: show visibleCandles count */}
+            <text x={padding.left} y={20} fontSize="12" fill="red">
+              {`Debug: ${visibleCandles.length} candles, width: ${chartWidth}`}
+            </text>
+
             {/* Candlesticks */}
             {visibleCandles.map((candle, i) => {
               const x = xScale(i);
