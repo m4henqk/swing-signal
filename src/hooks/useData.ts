@@ -64,6 +64,7 @@ export const SYMBOL_TO_COINGECKO_ID: Record<string, string> = {
   AAVE: 'aave',
   MKR: 'maker',
   PEPE: 'pepe',
+  ZRO: 'layerzero',
 };
 
 /** Resolves the Binance trading pair for a symbol (default USDT quote). */

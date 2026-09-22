@@ -38,6 +38,7 @@ export const Watchlist: React.FC<WatchlistProps> = ({
 }) => {
   const [newSymbol, setNewSymbol] = useState('');
   const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const [selectKey, setSelectKey] = useState(0); // Key to force re-render of Select
   const { toast } = useToast();
 
   const handleAddCoin = async (symbol: string) => {
@@ -66,6 +67,11 @@ export const Watchlist: React.FC<WatchlistProps> = ({
     } else {
       handleAddCoin(value);
     }
+  };
+
+  const handleCloseCustom = () => {
+    setIsSelectOpen(false);
+    setSelectKey((k) => k + 1); // Force re-render Select to reset its value
   };
 
   if (watchlist.length === 0) {
@@ -100,6 +106,9 @@ export const Watchlist: React.FC<WatchlistProps> = ({
                 onChange={(e) => setNewSymbol(e.target.value.toUpperCase())}
                 className="flex-1"
               />
+              <Button type="button" variant="ghost" size="icon" onClick={handleCloseCustom}>
+                <span className="text-xs">✕</span>
+              </Button>
               <Button type="submit" variant="default" size="icon">
                 <Plus className="h-4 w-4" />
               </Button>
@@ -126,7 +135,7 @@ export const Watchlist: React.FC<WatchlistProps> = ({
     <div className="space-y-4">
       <div className="space-y-2">
         <label className="text-sm font-medium">Add a coin</label>
-        <Select onValueChange={handleSelectChange}>
+        <Select key={selectKey} onValueChange={handleSelectChange}>
           <SelectTrigger>
             <SelectValue placeholder="Select a coin to add..." />
           </SelectTrigger>
@@ -146,13 +155,16 @@ export const Watchlist: React.FC<WatchlistProps> = ({
         </Select>
         
         {isSelectOpen && (
-          <form onSubmit={(e) => { e.preventDefault(); handleAddCoin(newSymbol); setIsSelectOpen(false); }} className="flex space-x-2 mt-2">
+          <form onSubmit={(e) => { e.preventDefault(); handleAddCoin(newSymbol); }} className="flex space-x-2 mt-2">
             <Input
               placeholder="Enter symbol (e.g., BTC)"
               value={newSymbol}
               onChange={(e) => setNewSymbol(e.target.value.toUpperCase())}
               className="flex-1"
             />
+            <Button type="button" variant="ghost" size="icon" onClick={handleCloseCustom}>
+              <span className="text-xs">✕</span>
+            </Button>
             <Button type="submit" variant="default" size="icon">
               <Plus className="h-4 w-4" />
             </Button>
