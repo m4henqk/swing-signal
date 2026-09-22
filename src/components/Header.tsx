@@ -14,6 +14,8 @@ interface HeaderProps {
   onRefresh: () => void;
   status: DataStatus;
   lastUpdated: number | null;
+  theme?: 'dark' | 'light';
+  onThemeChange?: (theme: 'dark' | 'light') => void;
 }
 
 /** "X min ago" helper — the offline indicator the spec asks for. */
@@ -40,8 +42,13 @@ export const Header: React.FC<HeaderProps> = ({
   onRefresh,
   status,
   lastUpdated,
+  // Support legacy props or derive from settings
+  theme: propTheme,
+  onThemeChange: propOnThemeChange,
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const theme = propTheme || settings.theme;
+  const onThemeChange = propOnThemeChange || ((t: 'dark' | 'light') => onSettingsChange({ theme: t }));
   const meta = STATUS_META[status];
 
   return (

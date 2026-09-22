@@ -68,6 +68,7 @@ export const SYMBOL_TO_COINGECKO_ID: Record<string, string> = {
 
 /** Resolves the Binance trading pair for a symbol (default USDT quote). */
 export const binancePair = (symbol: string) => `${symbol.toUpperCase()}USDT`;
+export { SYMBOL_TO_COINGECKO_ID };
 
 export function useData(
   watchlist: Array<{ id: string; symbol: string; name: string }>,

@@ -5,7 +5,7 @@ import { CandlestickChart } from '@/components/CandlestickChart';
 import { SignalPanel } from '@/components/SignalPanel';
 import { FundamentalsCard } from '@/components/FundamentalsCard';
 import { SettingsModal } from '@/components/SettingsModal';
-import { useData } from '@/hooks/useData';
+import { useData, SYMBOL_TO_COINGECKO_ID } from '@/hooks/useData';
 import { AppSettings } from '@/types';
 import { config } from '@/config';
 import { useToast } from '@/hooks/use-toast';
@@ -16,6 +16,7 @@ const INITIAL_SETTINGS: AppSettings = {
   lookback: config.lookbackOptions[0],
   threshold: config.thresholdOptions[0],
   refreshInterval: config.refreshIntervalOptions[0],
+  theme: 'dark',
   binanceBaseUrl: config.binanceApiBaseUrl,
   coingeckoBaseUrl: config.coingeckoApiBaseUrl,
 };
@@ -213,7 +214,6 @@ const Index: React.FC = () => {
     // grep showed: export const SYMBOL_TO_COINGECKO_ID
     // So I can import it.
     
-    const { SYMBOL_TO_COINGECKO_ID } = await import('@/hooks/useData');
     const coinGeckoId = SYMBOL_TO_COINGECKO_ID[symbol.toUpperCase()];
 
     if (!coinGeckoId) {
@@ -266,8 +266,6 @@ const Index: React.FC = () => {
         lastRefresh={lastUpdated}
         onRefresh={refresh}
         onOpenSettings={() => setIsSettingsModalOpen(true)}
-        theme={theme}
-        onThemeChange={handleThemeChange}
         settings={settings}
         onSettingsChange={setSettings}
       />
