@@ -272,7 +272,7 @@ const Index: React.FC = () => {
         onRefresh={refresh}
         onOpenSettings={() => setIsSettingsModalOpen(true)}
         settings={settings}
-        onSettingsChange={setSettings}
+        onSettingsChange={(newSettings) => setSettings((prev) => ({ ...prev, ...newSettings }))}
       />
 
       <main className="container grid flex-1 grid-cols-1 gap-6 py-6 lg:grid-cols-3 xl:grid-cols-4">
@@ -318,7 +318,7 @@ const Index: React.FC = () => {
 
       <SettingsModal
         settings={settings}
-        onSettingsChange={setSettings}
+        onSettingsChange={(newSettings) => setSettings((prev) => ({ ...prev, ...newSettings }))}
         isOpen={isSettingsModalOpen}
         onOpenChange={setIsSettingsModalOpen}
       />
