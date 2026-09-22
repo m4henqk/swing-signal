@@ -383,7 +383,7 @@ export const CandlestickChart: React.FC<CandlestickChartProps> = ({
             <circle cx={xScale(visibleCandles.length - 1)} cy={padding.top + chartHeight / 2} r="5" fill="green" />
 
             {/* Candlesticks */}
-            {visibleCandles.map((candle, i) => {
+            {visibleCandles.length > 0 && visibleCandles.map((candle, i) => {
               const x = xScale(i);
               const openY = yScale(candle.open);
               const closeY = yScale(candle.close);
@@ -391,8 +391,9 @@ export const CandlestickChart: React.FC<CandlestickChartProps> = ({
               const lowY = yScale(candle.low);
 
               const isGreen = candle.close >= candle.open;
-              const candleColor = isGreen ? 'hsl(var(--emerald-500))' : 'hsl(var(--rose-500))';
+              const candleColor = isGreen ? '#22c55e' : '#ef4444'; // Use explicit colors
 
+              // Debug: draw a visible box for each candle
               return (
                 <g key={candle.timestamp}>
                   {/* Wick */}
@@ -408,10 +409,9 @@ export const CandlestickChart: React.FC<CandlestickChartProps> = ({
                   <rect
                     x={x}
                     y={Math.min(openY, closeY)}
-                    width={candleBodyWidth}
+                    width={Math.max(1, candleBodyWidth)}
                     height={Math.max(1, Math.abs(openY - closeY))}
                     fill={candleColor}
-                    rx="0.5" ry="0.5"
                   />
                 </g>
               );
