@@ -25,7 +25,12 @@ const Index: React.FC = () => {
   const [settings, setSettings] = useState<AppSettings>(() => {
     try {
       const storedSettings = localStorage.getItem('appSettings');
-      return storedSettings ? JSON.parse(storedSettings) : INITIAL_SETTINGS;
+      if (storedSettings) {
+        const parsed = JSON.parse(storedSettings);
+        // Merge with INITIAL_SETTINGS to ensure all fields are present
+        return { ...INITIAL_SETTINGS, ...parsed };
+      }
+      return INITIAL_SETTINGS;
     } catch (error) {
       console.error('Failed to load settings from localStorage:', error);
       return INITIAL_SETTINGS;
