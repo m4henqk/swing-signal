@@ -184,8 +184,8 @@ const Index: React.FC = () => {
 
 
   const selectedCoinData = selectedCoinId ? coinDataById[selectedCoinId] : null;
-  const selectedCoinStats = selectedCoinId ? coinStatsMap[selectedCoinId] : null;
-  const selectedCoinOHLCV = selectedCoinId ? ohlcvById[selectedCoinId] : [];
+  const selectedCoinStats = selectedCoinId ? (coinStatsMap[selectedCoinId] || null) : null;
+  const selectedCoinOHLCV = selectedCoinId ? (ohlcvById[selectedCoinId] || []) : [];
   const selectedCoinInfo = watchlist.find((coin) => coin.id === selectedCoinId);
 
   const handleAddCoin = async (symbol: string) => {
